@@ -1,6 +1,6 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect("localhost","root","","myhmsdb2");
 if(isset($_POST['patsub1'])){
 	$fname=$_POST['fname'];
   $lname=$_POST['lname'];
@@ -10,7 +10,7 @@ if(isset($_POST['patsub1'])){
 	$password=$_POST['password'];
   $cpassword=$_POST['cpassword'];
   if($password==$cpassword){
-  	$query="insert into patreg(fname,lname,gender,email,contact,password,cpassword) values ('$fname','$lname','$gender','$email','$contact','$password','$cpassword');";
+  	$query="insert into paciente(pnombre, papellido, genero, correo, telefono, password, cpassword) values ('$fname','$lname','$gender','$email','$contact','$password','$cpassword');";
     $result=mysqli_query($con,$query);
     if($result){
         $_SESSION['username'] = $_POST['fname']." ".$_POST['lname'];
@@ -22,10 +22,10 @@ if(isset($_POST['patsub1'])){
         header("Location:admin-panel.php");
     } 
 
-    $query1 = "select * from patreg;";
+    $query1 = "select * from paciente;";
     $result1 = mysqli_query($con,$query1);
     if($result1){
-      $_SESSION['pid'] = $row['pid'];
+      $_SESSION['id'] = $row['id'];
     }
 
   }
