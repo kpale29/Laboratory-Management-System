@@ -58,6 +58,12 @@ CREATE TABLE `paciente` (
 -- ( 'Peter', 'Norvig', 'Male', 'peter@gmail.com', '9609362815', 'peter123', 'peter123'),
 -- ( 'Shraddha', 'Kapoor', 'Female', 'shraddha@gmail.com', '9768946252', 'shraddha123', 'shraddha123');
 
+create TABLE `examen`(
+  `id` int AUTO_INCREMENT PRIMARY KEY,
+  `examen` varchar(50) NOT NULL,
+  `precio` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `cita` (
   `id` int AUTO_INCREMENT PRIMARY KEY,
   `id_paciente` int(11) NOT NULL,
@@ -69,13 +75,14 @@ CREATE TABLE `cita` (
   -- `telefono` varchar(10) NOT NULL,
   -- `doctor` varchar(50) NOT NULL,
   -- `honorarios` int(5) NOT NULL,
-  `examen` varchar(50) NOT NULL,
+  `id_examen` int(1) NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
   `userStatus` int(5) NOT NULL,
   `doctorStatus` int(5) NOT NULL,
   FOREIGN KEY (id_paciente) REFERENCES paciente(id),
-  FOREIGN KEY (id_doctor) REFERENCES doctor(id)
+  FOREIGN KEY (id_doctor) REFERENCES doctor(id),
+  FOREIGN KEY (id_examen) REFERENCES examen(id),
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- INSERT INTO `cita` (`pid`, `ID`, `fname`, `lname`, `gender`, `email`, `contact`, `doctor`, `docFees`, `appdate`, `apptime`, `userStatus`, `doctorStatus`) VALUES

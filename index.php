@@ -56,7 +56,7 @@ function checklen()
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
+      <!-- <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item" style="margin-right: 40px;">
             <a class="nav-link js-scroll-trigger" href="index.php" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>HOME</h6></a>
@@ -70,7 +70,7 @@ function checklen()
             <a class="nav-link js-scroll-trigger" href="contact.html" style="color: white;font-family: 'IBM Plex Sans', sans-serif;"><h6>CONTACT</h6></a>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </nav>
 
@@ -138,7 +138,7 @@ function checklen()
                                         <div class="form-group">
                                             <input type="password" class="form-control"  id="cpassword" placeholder="Confirmación de contraseña *" name="cpassword"  onkeyup='check();' required/><span id='message'></span>
                                         </div>
-                                        <input type="submit" class="btnRegister" name="patsub1" onclick="return checklen();" value="Register"/>
+                                        <input type="submit" class="btnRegister" name="patsub1" onclick="return checklen();" value="Registrar"/>
                                     </div>
 
                                 </div>
