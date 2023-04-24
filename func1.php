@@ -156,7 +156,7 @@ function display_admin_panel(){
                     </select>
                   </div><br><br><br>
                   <div class="col-md-4">
-                    <input type="submit" name="entry_submit" value="Create new entry" class="btn btn-primary" id="inputbtn">
+                    <input type="submit" name="entry_submit" value="Crear" class="btn btn-primary" id="inputbtn">
                   </div>
                   <div class="col-md-8"></div>                  
                 </div>

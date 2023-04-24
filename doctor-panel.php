@@ -218,7 +218,7 @@ if(isset($_GET['cancel']))
 
 													
 	                        <a href="doctor-panel.php?ID=<?php echo $row['ID']?>&cancel=update" 
-                              onClick="return confirm('Are you sure you want to cancel this appointment ?')"
+                              onClick="return confirm('Desea cancelar la cita?')"
                               title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
 	                        <?php } else {
 

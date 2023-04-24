@@ -24,6 +24,7 @@ if (isset($_POST['app-submit'])) {
   $gender = $_SESSION['gender'];
   $contact = $_SESSION['contact'];
   $doctor = $_POST['doctor'];
+  $examen = $_POST['examen'];
   $email = $_SESSION['email'];
   # $fees=$_POST['fees'];
   $docFees = $_POST['docFees'];
@@ -38,32 +39,32 @@ if (isset($_POST['app-submit'])) {
 
   if (date("Y-m-d", $appdate1) >= $cur_date) {
     if ((date("Y-m-d", $appdate1) == $cur_date and date("H:i:s", $apptime1) > $cur_time) or date("Y-m-d", $appdate1) > $cur_date) {
-      $check_query = mysqli_query($con, "select fecha from cita where doctor='$doctor' and appdate='$appdate' and fecha='$apptime'");
+      $check_query = mysqli_query($con, "select fecha from cita where id_doctor = '$doctor'and fecha ='$appdate'and hora = '$apptime'");
 
       if (mysqli_num_rows($check_query) == 0) {
-        $query = mysqli_query($con, "insert into cita(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
+        $query = mysqli_query($con, "insert into cita(id_paciente,id_doctor,id_examen,fecha,hora,userStatus,doctorStatus) values('$pid','$doctor','$examen','$appdate','$apptime','1','1')");
 
         if ($query) {
-          echo "<script>alert('Your appointment successfully booked');</script>";
+          echo "<script>alert('Tu cita fue agendada con exito!');</script>";
         } else {
           echo "<script>alert('Unable to process your request. Please try again!');</script>";
         }
       } else {
-        echo "<script>alert('We are sorry to inform that the doctor is not available in this time or date. Please choose different time or date!');</script>";
+        echo "<script>alert('Lamentamos informarle que el doctor no se encuentra disponible en este horario, eliga uno diferente.');</script>";
       }
     } else {
-      echo "<script>alert('Select a time or date in the future!');</script>";
+      echo "<script>alert('Selecciona una fecha distinta a hoy.');</script>";
     }
   } else {
-    echo "<script>alert('Select a time or date in the future!');</script>";
+    echo "<script>alert('Selecciona una fecha distinta a hoy.');</script>";
   }
 
 }
 
 if (isset($_GET['cancel'])) {
-  $query = mysqli_query($con, "update cita set userStatus='0' where ID = '" . $_GET['ID'] . "'");
+  $query = mysqli_query($con, "update cita set userStatus='0' where id = '" . $_GET['ID'] . "'");
   if ($query) {
-    echo "<script>alert('Your appointment successfully cancelled');</script>";
+    echo "<script>alert('Tu cita fue cancelada con exito!');</script>";
   }
 }
 
@@ -317,7 +318,7 @@ function get_specs()
               <div class="card">
                 <div class="card-body">
                   <center>
-                    <h4>Create an appointment</h4>
+                    <h4>Agendar una cita</h4>
                   </center><br>
                   <form class="form-group" method="post" action="admin-panel.php">
                     <div class="row">
@@ -325,7 +326,7 @@ function get_specs()
                       <!-- <?php
 
                       $con = mysqli_connect("localhost", "root", "", "myhmsdb2");
-                      $query = mysqli_query($con, "select usuario username,especialidad spec from doctor");
+                      $query = mysqli_query($con, "select id, usuario username,especialidad spec from doctor");
                       $docarray = array();
                       while ($row = mysqli_fetch_assoc($query)) {
                         $docarray[] = $row;
@@ -336,39 +337,23 @@ function get_specs()
 
 
                       <div class="col-md-4">
-                        <label for="spec">Specialization:</label>
+                        <label for="spec">Examen:</label>
                       </div>
                       <div class="col-md-8">
-                        <select name="spec" class="form-control" id="spec">
-                          <option value="" disabled selected>Select Specialization</option>
+                        <select name="examen" class="form-control" id="examen">
+                          <option value="" disabled selected>Selecciona un examen</option>
                           <?php
-                          display_specs();
+                          display_examen();
                           ?>
                         </select>
                       </div>
 
                       <br><br>
 
-                      <script>
-                        document.getElementById('spec').onchange = function foo() {
-                          let spec = this.value;
-                          console.log(spec)
-                          let docs = [...document.getElementById('doctor').options];
-
-                          docs.forEach((el, ind, arr) => {
-                            arr[ind].setAttribute("style", "");
-                            if (el.getAttribute("data-spec") != spec) {
-                              arr[ind].setAttribute("style", "display: none");
-                            }
-                          });
-                        };
-
-                      </script>
-
-                      <div class="col-md-4"><label for="doctor">Doctors:</label></div>
+                      <div class="col-md-4"><label for="doctor">Medico:</label></div>
                       <div class="col-md-8">
                         <select name="doctor" class="form-control" id="doctor" required="required">
-                          <option value="" disabled selected>Select Doctor</option>
+                          <option value="" disabled selected>Selecciona un medico</option>
 
                           <?php display_docs(); ?>
                         </select>
@@ -376,29 +361,29 @@ function get_specs()
 
 
                       <script>
-                        document.getElementById('doctor').onchange = function updateFees(e) {
-                          var selection = document.querySelector(`[value=${this.value}]`).getAttribute('data-value');
+                        document.getElementById('examen').onchange = function updateFees(e) {
+                          var selection = document.querySelector(`[value="${this.value}"]`).getAttribute('data-value');
                           document.getElementById('docFees').value = selection;
                         };
                       </script>
 
                       <div class="col-md-4"><label for="consultancyfees">
-                          Consultancy Fees
+                          Precio
                         </label></div>
                       <div class="col-md-8">
                         <!-- <div id="docFees">Select a doctor</div> -->
                         <input class="form-control" type="text" name="docFees" id="docFees" readonly="readonly" />
                       </div><br><br>
 
-                      <div class="col-md-4"><label>Appointment Date</label></div>
+                      <div class="col-md-4"><label>Fecha</label></div>
                       <div class="col-md-8"><input type="date" class="form-control datepicker" name="appdate"></div>
                       <br><br>
 
-                      <div class="col-md-4"><label>Appointment Time</label></div>
+                      <div class="col-md-4"><label>Hora</label></div>
                       <div class="col-md-8">
                         <!-- <input type="time" class="form-control" name="apptime"> -->
                         <select name="apptime" class="form-control" id="apptime" required="required">
-                          <option value="" disabled selected>Select Time</option>
+                          <option value="" disabled selected>Selecciona una fecha</option>
                           <option value="08:00:00">8:00 AM</option>
                           <option value="10:00:00">10:00 AM</option>
                           <option value="12:00:00">12:00 PM</option>
@@ -409,7 +394,7 @@ function get_specs()
                       </div><br><br>
 
                       <div class="col-md-4">
-                        <input type="submit" name="app-submit" value="Create new entry" class="btn btn-primary"
+                        <input type="submit" name="app-submit" value="Crear" class="btn btn-primary"
                           id="inputbtn">
                       </div>
                       <div class="col-md-8"></div>
@@ -426,12 +411,12 @@ function get_specs()
               <thead>
                 <tr>
 
-                  <th scope="col">Doctor Name</th>
-                  <th scope="col">Consultancy Fees</th>
-                  <th scope="col">Appointment Date</th>
-                  <th scope="col">Appointment Time</th>
-                  <th scope="col">Current Status</th>
-                  <th scope="col">Action</th>
+                  <th scope="col">Medico</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Hora</th>
+                  <th scope="col">Estado actual</th>
+                  <th scope="col">Accion</th>
                 </tr>
               </thead>
               <tbody>
@@ -440,7 +425,12 @@ function get_specs()
                 $con = mysqli_connect("localhost", "root", "", "myhmsdb2");
                 global $con;
 
-                $query = "select ID,doctor,docFees,appdate,apptime,userStatus,doctorStatus from cita where fname ='$fname' and lname='$lname';";
+                $query = "select c.Id ID, d.usuario doctor, e.precio docFees, c.fecha appdate, c.hora apptime, c.userStatus,c.doctorStatus
+                from cita c
+                inner join paciente p on p.id = c.id_paciente
+                inner join doctor d on d.id = c.id_doctor
+                inner join examen e on e.id = c.id_examen
+                where p.pnombre = '$fname' and papellido = '$lname';";
                 $result = mysqli_query($con, $query);
                 while ($row = mysqli_fetch_array($result)) {
 
@@ -482,7 +472,7 @@ function get_specs()
 
 
                         <a href="admin-panel.php?ID=<?php echo $row['ID'] ?>&cancel=update"
-                          onClick="return confirm('Are you sure you want to cancel this appointment ?')"
+                          onClick="return confirm('Desea cancelar la cita?')"
                           title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button
                             class="btn btn-danger">Cancel</button></a>
                       <?php } else {
@@ -522,7 +512,7 @@ function get_specs()
                 $con = mysqli_connect("localhost", "root", "", "myhmsdb2");
                 global $con;
 
-                $query = "select doctor,ID,appdate,apptime,disease,allergy,prescription from resultado where pid='$pid';";
+                $query = "select d.usuario doctor,c.id ID,c.fecha appdate, c.hora apptime, '' disease,'' allergy, r.comentario prescription from resultado r inner join cita c on c.id = r.id_cita inner join doctor d on d.id = c.id_doctor inner join paciente p on p.id = c.id_paciente where p.id='$pid';";
 
                 $result = mysqli_query($con, $query);
                 if (!$result) {

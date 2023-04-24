@@ -22,10 +22,12 @@ if(isset($_POST['patsub1'])){
         header("Location:admin-panel.php");
     } 
 
-    $query1 = "select * from paciente;";
+    $query1 = "select * from paciente order by id desc limit 1";
     $result1 = mysqli_query($con,$query1);
     if($result1){
-      $_SESSION['id'] = $row['id'];
+      while($row=mysqli_fetch_array($result1)){
+        $_SESSION['pid'] = $row['id'];
+      }
     }
 
   }
@@ -165,7 +167,7 @@ function display_admin_panel(){
                     </select>
                   </div><br><br><br>
                   <div class="col-md-4">
-                    <input type="submit" name="entry_submit" value="Create new entry" class="btn btn-primary" id="inputbtn">
+                    <input type="submit" name="entry_submit" value="Crear" class="btn btn-primary" id="inputbtn">
                   </div>
                   <div class="col-md-8"></div>                  
                 </div>

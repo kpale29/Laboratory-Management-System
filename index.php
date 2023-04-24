@@ -22,10 +22,10 @@
   if (document.getElementById('password').value ==
     document.getElementById('cpassword').value) {
     document.getElementById('message').style.color = '#5dd05d';
-    document.getElementById('message').innerHTML = 'Matched';
+    document.getElementById('message').innerHTML = 'Coincide';
   } else {
     document.getElementById('message').style.color = '#f55252';
-    document.getElementById('message').innerHTML = 'Not Matching';
+    document.getElementById('message').innerHTML = 'No coincide';
   }
 }
 
@@ -38,7 +38,7 @@ function checklen()
 {
     var pass1 = document.getElementById("password");  
     if(pass1.value.length<6){  
-        alert("Password must be at least 6 characters long. Try again!");  
+        alert("La contraseña al menos 6 caracteres. Intenta de nuevo!");  
         return false;  
   }  
 }

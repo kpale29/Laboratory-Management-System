@@ -41,7 +41,7 @@ if(isset($_POST['update_data']))
 
 function display_specs() {
   global $con;
-  $query="select distinct(spec) from doctor";
+  $query="select distinct(especialidad) spec from doctor";
   $result=mysqli_query($con,$query);
   while($row=mysqli_fetch_array($result))
   {
@@ -50,17 +50,31 @@ function display_specs() {
   }
 }
 
+function display_examen() {
+  global $con;
+  $query="select * from examen";
+  $result=mysqli_query($con,$query);
+  while($row=mysqli_fetch_array($result))
+  {
+    $id=$row['id'];
+    $examen=$row['examen'];
+    $price=$row['precio'];
+    echo '<option value="'.$id.'" data-value="'.$price.'">'.$examen.'</option>';
+  }
+} 
+
 function display_docs()
 {
  global $con;
- $query = "select * from doctor";
+ $query = "select id, usuario username, password, correo email, especialidad spec, honorarios docFees  from doctor";
  $result = mysqli_query($con,$query);
  while( $row = mysqli_fetch_array($result) )
  {
   $username = $row['username'];
+  $id = $row['id'];
   $price = $row['docFees'];
   $spec = $row['spec'];
-  echo '<option value="' .$username. '" data-value="'.$price.'" data-spec="'.$spec.'">'.$username.'</option>';
+  echo '<option value="' .$id. '" data-value="'.$price.'" data-spec="'.$spec.'">'.$username.'</option>';
  }
 }
 
@@ -80,7 +94,7 @@ function display_docs()
 if(isset($_POST['doc_sub']))
 {
  $username=$_POST['username'];
- $query="insert into doctor(username)values('$username')";
+ $query="insert into doctor(usuario)values('$username')";
  $result=mysqli_query($con,$query);
  if($result)
   header("Location:adddoc.php");
