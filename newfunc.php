@@ -1,6 +1,6 @@
 <?php
 // session_start();
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect("localhost","root","","myhmsdb2");
 // if(isset($_POST['submit'])){
 //  $username=$_POST['username'];
 //  $password=$_POST['password'];
@@ -19,7 +19,7 @@ if(isset($_POST['update_data']))
 {
  $contact=$_POST['contact'];
  $status=$_POST['status'];
- $query="update appointmenttb set payment='$status' where contact='$contact';";
+ $query="update cita set payment='$status' where contact='$contact';";
  $result=mysqli_query($con,$query);
  if($result)
   header("Location:updated.php");
@@ -28,7 +28,7 @@ if(isset($_POST['update_data']))
 // function display_docs()
 // {
 //  global $con;
-//  $query="select * from doctb";
+//  $query="select * from doctor";
 //  $result=mysqli_query($con,$query);
 //  while($row=mysqli_fetch_array($result))
 //  {
@@ -41,7 +41,7 @@ if(isset($_POST['update_data']))
 
 function display_specs() {
   global $con;
-  $query="select distinct(spec) from doctb";
+  $query="select distinct(spec) from doctor";
   $result=mysqli_query($con,$query);
   while($row=mysqli_fetch_array($result))
   {
@@ -53,7 +53,7 @@ function display_specs() {
 function display_docs()
 {
  global $con;
- $query = "select * from doctb";
+ $query = "select * from doctor";
  $result = mysqli_query($con,$query);
  while( $row = mysqli_fetch_array($result) )
  {
@@ -66,7 +66,7 @@ function display_docs()
 
 // function display_specs() {
 //   global $con;
-//   $query = "select distinct(spec) from doctb";
+//   $query = "select distinct(spec) from doctor";
 //   $result = mysqli_query($con,$query);
 //   while($row = mysqli_fetch_array($result))
 //   {
@@ -80,7 +80,7 @@ function display_docs()
 if(isset($_POST['doc_sub']))
 {
  $username=$_POST['username'];
- $query="insert into doctb(username)values('$username')";
+ $query="insert into doctor(username)values('$username')";
  $result=mysqli_query($con,$query);
  if($result)
   header("Location:adddoc.php");

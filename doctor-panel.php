@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <?php 
 include('func1.php');
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect("localhost","root","","myhmsdb2");
 $doctor = $_SESSION['dname'];
 if(isset($_GET['cancel']))
   {
-    $query=mysqli_query($con,"update appointmenttb set doctorStatus='0' where ID = '".$_GET['ID']."'");
+    $query=mysqli_query($con,"update cita set doctorStatus='0' where ID = '".$_GET['ID']."'");
     if($query)
     {
       echo "<script>alert('Your appointment successfully cancelled');</script>";
@@ -21,7 +21,7 @@ if(isset($_GET['cancel']))
   //   $disease = $_GET['disease'];
   //   $allergy = $_GET['allergy'];
   //   $prescription = $_GET['prescription'];
-  //   $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,appdate,apptime,disease,allergy,prescription) values ('$doctor',$pid,$ID,'$appdate','$apptime','$disease','$allergy','$prescription');");
+  //   $query=mysqli_query($con,"insert into resultado(doctor,pid,ID,appdate,apptime,disease,allergy,prescription) values ('$doctor',$pid,$ID,'$appdate','$apptime','$disease','$allergy','$prescription');");
   //   if($query)
   //   {
   //     echo "<script>alert('Prescribed successfully!');</script>";
@@ -179,10 +179,10 @@ if(isset($_GET['cancel']))
                 </thead>
                 <tbody>
                   <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
                     $dname = $_SESSION['dname'];
-                    $query = "select pid,ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
+                    $query = "select pid,ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from cita where doctor='$dname';";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                       ?>
@@ -272,10 +272,10 @@ if(isset($_GET['cancel']))
                 <tbody>
                   <?php 
 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
 
-                    $query = "select pid,fname,lname,ID,appdate,apptime,disease,allergy,prescription from prestb where doctor='$doctor';";
+                    $query = "select pid,fname,lname,ID,appdate,apptime,disease,allergy,prescription from resultado where doctor='$doctor';";
                     
                     $result = mysqli_query($con,$query);
                     if(!$result){
@@ -325,10 +325,10 @@ if(isset($_GET['cancel']))
                 <tbody>
                   <?php 
 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
 
-                    $query = "select * from appointmenttb;";
+                    $query = "select * from cita;";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
               

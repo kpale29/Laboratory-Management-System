@@ -37,7 +37,7 @@ if(isset($_POST['update_data']))
 {
 	$contact=$_POST['contact'];
 	$status=$_POST['status'];
-	$query="update appointmenttb set payment='$status' where contact='$contact';";
+	$query="update cita set payment='$status' where contact='$contact';";
 	$result=mysqli_query($con,$query);
 	if($result)
 		header("Location:updated.php");
@@ -49,7 +49,7 @@ if(isset($_POST['update_data']))
 // function display_docs()
 // {
 // 	global $con;
-// 	$query="select * from doctb";
+// 	$query="select * from doctor";
 // 	$result=mysqli_query($con,$query);
 // 	while($row=mysqli_fetch_array($result))
 // 	{
@@ -62,7 +62,7 @@ if(isset($_POST['update_data']))
 if(isset($_POST['doc_sub']))
 {
 	$name=$_POST['name'];
-	$query="insert into doctb(name)values('$name')";
+	$query="insert into doctor(name)values('$name')";
 	$result=mysqli_query($con,$query);
 	if($result)
 		header("Location:adddoc.php");

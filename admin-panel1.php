@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php 
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect("localhost","root","","myhmsdb2");
 
 include('newfunc.php');
 
@@ -11,7 +11,7 @@ if(isset($_POST['docsub']))
   $demail=$_POST['demail'];
   $spec=$_POST['special'];
   $docFees=$_POST['docFees'];
-  $query="insert into doctb(username,password,email,spec,docFees)values('$doctor','$dpassword','$demail','$spec','$docFees')";
+  $query="insert into doctor(username,password,email,spec,docFees)values('$doctor','$dpassword','$demail','$spec','$docFees')";
   $result=mysqli_query($con,$query);
   if($result)
     {
@@ -23,7 +23,7 @@ if(isset($_POST['docsub']))
 if(isset($_POST['docsub1']))
 {
   $demail=$_POST['demail'];
-  $query="delete from doctb where email='$demail';";
+  $query="delete from doctor where email='$demail';";
   $result=mysqli_query($con,$query);
   if($result)
     {
@@ -53,7 +53,7 @@ if(isset($_POST['docsub1']))
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <a class="navbar-brand" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Global Hospital </a>
+  <a class="navbar-brand" href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> Laboratorio clinico </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -272,9 +272,9 @@ if(isset($_POST['docsub1']))
                 </thead>
                 <tbody>
                   <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
-                    $query = "select * from doctb";
+                    $query = "select * from doctor";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                       $username = $row['username'];
@@ -323,9 +323,9 @@ if(isset($_POST['docsub1']))
                 </thead>
                 <tbody>
                   <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
-                    $query = "select * from patreg";
+                    $query = "select * from paciente";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                       $pid = $row['pid'];
@@ -379,9 +379,9 @@ if(isset($_POST['docsub1']))
                 </thead>
                 <tbody>
                   <?php 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
-                    $query = "select * from prestb";
+                    $query = "select * from resultado";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                       $doctor = $row['doctor'];
@@ -451,10 +451,10 @@ if(isset($_POST['docsub1']))
                 <tbody>
                   <?php 
 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
 
-                    $query = "select * from appointmenttb;";
+                    $query = "select * from cita;";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                   ?>
@@ -561,7 +561,7 @@ if(isset($_POST['docsub1']))
                 <tbody>
                   <?php 
 
-                    $con=mysqli_connect("localhost","root","","myhmsdb");
+                    $con=mysqli_connect("localhost","root","","myhmsdb2");
                     global $con;
 
                     $query = "select * from contact;";

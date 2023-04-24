@@ -1,10 +1,10 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","","myhmsdb");
+$con=mysqli_connect("localhost","root","","myhmsdb2");
 if(isset($_POST['docsub1'])){
 	$dname=$_POST['username3'];
 	$dpass=$_POST['password3'];
-	$query="select * from doctb where username='$dname' and password='$dpass';";
+	$query="select * from doctor where usuario='$dname' and password='$dpass';";
 	$result=mysqli_query($con,$query);
 	if(mysqli_num_rows($result)==1)
 	{
@@ -39,7 +39,7 @@ if(isset($_POST['docsub1'])){
 function display_docs()
 {
 	global $con;
-	$query="select * from doctb";
+	$query="select * from doctor";
 	$result=mysqli_query($con,$query);
 	while($row=mysqli_fetch_array($result))
 	{
@@ -52,7 +52,7 @@ function display_docs()
 // if(isset($_POST['doc_sub']))
 // {
 // 	$name=$_POST['name'];
-// 	$query="insert into doctb(name)values('$name')";
+// 	$query="insert into doctor(name)values('$name')";
 // 	$result=mysqli_query($con,$query);
 // 	if($result)
 // 		header("Location:adddoc.php");
