@@ -21,8 +21,8 @@ session_destroy();
     </style>
   </head>
   <body style="background: -webkit-linear-gradient(left, #3931af, #00c6ff);color:white;padding-top:100px;text-align:center;">
-    <h3>You have logged out.</h3><br><br>
-    <a href="index1.php" class="btn btn-outline-light">Back to Login Page</a>
+    <h3>Sesión finalizada.</h3><br><br>
+    <a href="index1.php" class="btn btn-outline-light">Regresar a página inicio</a>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

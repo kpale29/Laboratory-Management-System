@@ -69,68 +69,18 @@ if (isset($_GET['cancel'])) {
 }
 
 
-
-
-
-function generate_bill()
-{
-  $con = mysqli_connect("localhost", "root", "", "myhmsdb2");
-  $pid = $_SESSION['pid'];
-  $output = '';
-  $query = mysqli_query($con, "select r.id, c.id, p.pnombre,papellido,d.usuario,r.fecha,'','',r.hora,r.comentario,e.precio from resultado r  inner join cita c on r.id_cita = c.id inner join paciente p  on c.id_paciente = p.id inner join doctor d on c.id_doctor = d.id inner join examen e on c.id_examen = e.id and c.id = '$pid' and r.id = '" . $_GET['ID'] . "'");
-  while ($row = mysqli_fetch_array($query)) {
-    $output .= '
-    <label> Patient ID : </label>' . $row["pid"] . '<br/><br/>
-    <label> Appointment ID : </label>' . $row["ID"] . '<br/><br/>
-    <label> Patient Name : </label>' . $row["fname"] . ' ' . $row["lname"] . '<br/><br/>
-    <label> Doctor Name : </label>' . $row["doctor"] . '<br/><br/>
-    <label> Appointment Date : </label>' . $row["appdate"] . '<br/><br/>
-    <label> Appointment Time : </label>' . $row["apptime"] . '<br/><br/>
-    <label> Disease : </label>' . $row["disease"] . '<br/><br/>
-    <label> Allergies : </label>' . $row["allergy"] . '<br/><br/>
-    <label> Prescription : </label>' . $row["prescription"] . '<br/><br/>
-    <label> Fees Paid : </label>' . $row["docFees"] . '<br/>
-    
-    ';
-
-  }
-
-  return $output;
-}
-
-
 if (isset($_GET["generate_bill"])) {
-  require_once("TCPDF/tcpdf.php");
-  $obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-  $obj_pdf->SetCreator(PDF_CREATOR);
-  $obj_pdf->SetTitle("Generate Bill");
-  $obj_pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
-  $obj_pdf->SetHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-  $obj_pdf->SetFooterFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-  $obj_pdf->SetDefaultMonospacedFont('helvetica');
-  $obj_pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-  $obj_pdf->SetMargins(PDF_MARGIN_LEFT, '5', PDF_MARGIN_RIGHT);
-  $obj_pdf->SetPrintHeader(false);
-  $obj_pdf->SetPrintFooter(false);
-  $obj_pdf->SetAutoPageBreak(TRUE, 10);
-  $obj_pdf->SetFont('helvetica', '', 12);
-  $obj_pdf->AddPage();
-
-  $content = '';
-
-  $content .= '
-      <br/>
-      <h2 align ="center"> Global Hospitals</h2></br>
-      <h3 align ="center"> Bill</h3>
-      
-
-  ';
-
-  $content .= generate_bill();
-  $obj_pdf->writeHTML($content);
-  ob_end_clean();
-  $obj_pdf->Output("bill.pdf", 'I');
-
+  $query = mysqli_query($con, "select r.id, c.id, p.pnombre,papellido,d.usuario,r.fecha,'','',r.hora,r.comentario,e.precio, r.path_resultado path from resultado r inner join cita c on r.id_cita = c.id inner join paciente p on c.id_paciente = p.id inner join doctor d on c.id_doctor = d.id inner join examen e on c.id_examen = e.id where r.id = '" . $_GET['id_resultado'] . "'");
+  while ($row = mysqli_fetch_array($query)) {
+    
+    $ruta_archivo = $row["path"];
+    header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($ruta_archivo).'"');
+        header('Content-Length: ' . filesize($ruta_archivo));
+        
+        // Leer el archivo y enviarlo al cliente
+        readfile($ruta_archivo);
+  }
 }
 
 function get_specs()
@@ -350,10 +300,10 @@ function get_specs()
 
                       <br><br>
 
-                      <div class="col-md-4"><label for="doctor">Medico:</label></div>
+                      <div class="col-md-4"><label for="doctor">Técnico:</label></div>
                       <div class="col-md-8">
                         <select name="doctor" class="form-control" id="doctor" required="required">
-                          <option value="" disabled selected>Selecciona un medico</option>
+                          <option value="" disabled selected>Selecciona un técnico</option>
 
                           <?php display_docs(); ?>
                         </select>
@@ -411,7 +361,7 @@ function get_specs()
               <thead>
                 <tr>
 
-                  <th scope="col">Medico</th>
+                  <th scope="col">Técnico</th>
                   <th scope="col">Precio</th>
                   <th scope="col">Fecha</th>
                   <th scope="col">Hora</th>
@@ -495,15 +445,13 @@ function get_specs()
             <table class="table table-hover">
               <thead>
                 <tr>
-
-                  <th scope="col">Doctor Name</th>
-                  <th scope="col">Appointment ID</th>
-                  <th scope="col">Appointment Date</th>
-                  <th scope="col">Appointment Time</th>
-                  <th scope="col">Diseases</th>
-                  <th scope="col">Allergies</th>
-                  <th scope="col">Prescriptions</th>
-                  <th scope="col">Bill Payment</th>
+                <th scope="col">Id Resultado</th>
+                  <th scope="col">Técnico</th>
+                  <th scope="col">Id Cita</th>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Hora</th>
+                  <th scope="col">Comentario</th>
+                  <th scope="col">Resultado</th>
                 </tr>
               </thead>
               <tbody>
@@ -512,7 +460,7 @@ function get_specs()
                 $con = mysqli_connect("localhost", "root", "", "myhmsdb2");
                 global $con;
 
-                $query = "select d.usuario doctor,c.id ID,c.fecha appdate, c.hora apptime, '' disease,'' allergy, r.comentario prescription from resultado r inner join cita c on c.id = r.id_cita inner join doctor d on d.id = c.id_doctor inner join paciente p on p.id = c.id_paciente where p.id='$pid';";
+                $query = "select r.id id_resultado,d.usuario doctor,c.id ID,c.fecha appdate, c.hora apptime, r.comentario prescription from resultado r inner join cita c on c.id = r.id_cita inner join doctor d on d.id = c.id_doctor inner join paciente p on p.id = c.id_paciente where p.id='$pid';";
 
                 $result = mysqli_query($con, $query);
                 if (!$result) {
@@ -523,6 +471,9 @@ function get_specs()
                 while ($row = mysqli_fetch_array($result)) {
                   ?>
                   <tr>
+                    <td>
+                      <?php echo $row['id_resultado']; ?>
+                    </td>
                     <td>
                       <?php echo $row['doctor']; ?>
                     </td>
@@ -536,25 +487,15 @@ function get_specs()
                       <?php echo $row['apptime']; ?>
                     </td>
                     <td>
-                      <?php echo $row['disease']; ?>
-                    </td>
-                    <td>
-                      <?php echo $row['allergy']; ?>
-                    </td>
-                    <td>
                       <?php echo $row['prescription']; ?>
                     </td>
                     <td>
                       <form method="get">
-                        <!-- <a href="admin-panel.php?ID=" 
-                              onClick=""
-                              title="Pay Bill" tooltip-placement="top" tooltip="Remove"><button class="btn btn-success">Pay</button>
-                              </a></td> -->
 
-                        <a href="admin-panel.php?ID=<?php echo $row['ID'] ?>">
-                          <input type="hidden" name="ID" value="<?php echo $row['ID'] ?>" />
-                          <input type="submit" onclick="alert('Bill Paid Successfully');" name="generate_bill"
-                            class="btn btn-success" value="Pay Bill" />
+                        <a href="admin-panel.php?id_resultado=<?php echo $row['id_resultado'] ?>">
+                          <input type="hidden" name="id_resultado" value="<?php echo $row['id_resultado'] ?>" />
+                          <input type="submit" name="generate_bill"
+                            class="btn btn-success" value="Descargar" />
                         </a>
                     </td>
                     </form>
