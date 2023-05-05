@@ -72,14 +72,14 @@ if (isset($_GET['cancel'])) {
 if (isset($_GET["generate_bill"])) {
   $query = mysqli_query($con, "select r.id, c.id, p.pnombre,papellido,d.usuario,r.fecha,'','',r.hora,r.comentario,e.precio, r.path_resultado path from resultado r inner join cita c on r.id_cita = c.id inner join paciente p on c.id_paciente = p.id inner join doctor d on c.id_doctor = d.id inner join examen e on c.id_examen = e.id where r.id = '" . $_GET['id_resultado'] . "'");
   while ($row = mysqli_fetch_array($query)) {
-    
+
     $ruta_archivo = $row["path"];
     header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($ruta_archivo).'"');
-        header('Content-Length: ' . filesize($ruta_archivo));
-        
-        // Leer el archivo y enviarlo al cliente
-        readfile($ruta_archivo);
+    header('Content-Disposition: attachment; filename="' . basename($ruta_archivo) . '"');
+    header('Content-Length: ' . filesize($ruta_archivo));
+
+    // Leer el archivo y enviarlo al cliente
+    readfile($ruta_archivo);
   }
 }
 
@@ -300,18 +300,11 @@ function get_specs()
 
                       <br><br>
 
-                      <div class="col-md-4"><label for="doctor">Técnico:</label></div>
-                      <div class="col-md-8">
-                        <select name="doctor" class="form-control" id="doctor" required="required">
-                          <option value="" disabled selected>Selecciona un técnico</option>
-
-                          <?php display_docs(); ?>
-                        </select>
-                      </div><br /><br />
-
-
                       <script>
-                        document.getElementById('examen').onchange = function updateFees(e) {
+                        document.getElementById('examen').onchange = function updateComent(e) {
+                          var selection = document.querySelector(`[value="${this.value}"]`).getAttribute('valor');
+                          document.getElementById('comment').value = selection;
+
                           var selection = document.querySelector(`[value="${this.value}"]`).getAttribute('data-value');
                           document.getElementById('docFees').value = selection;
                         };
@@ -324,6 +317,23 @@ function get_specs()
                         <!-- <div id="docFees">Select a doctor</div> -->
                         <input class="form-control" type="text" name="docFees" id="docFees" readonly="readonly" />
                       </div><br><br>
+
+                      <div class="col-md-4"><label for="consultancyfees">
+                          Comentario
+                        </label></div>
+                      <div class="col-md-8">
+                        <!-- <div id="docFees">Select a doctor</div> -->
+                        <input class="form-control" type="text" name="comment" id="comment" readonly="readonly" />
+                      </div><br><br>
+
+                      <div class="col-md-4"><label for="doctor">Técnico:</label></div>
+                      <div class="col-md-8">
+                        <select name="doctor" class="form-control" id="doctor" required="required">
+                          <option value="" disabled selected>Selecciona un técnico</option>
+
+                          <?php display_docs(); ?>
+                        </select>
+                      </div><br /><br />
 
                       <div class="col-md-4"><label>Fecha</label></div>
                       <div class="col-md-8"><input type="date" class="form-control datepicker" name="appdate"></div>
@@ -344,8 +354,7 @@ function get_specs()
                       </div><br><br>
 
                       <div class="col-md-4">
-                        <input type="submit" name="app-submit" value="Crear" class="btn btn-primary"
-                          id="inputbtn">
+                        <input type="submit" name="app-submit" value="Crear" class="btn btn-primary" id="inputbtn">
                       </div>
                       <div class="col-md-8"></div>
                     </div>
@@ -422,9 +431,8 @@ function get_specs()
 
 
                         <a href="admin-panel.php?ID=<?php echo $row['ID'] ?>&cancel=update"
-                          onClick="return confirm('Desea cancelar la cita?')"
-                          title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button
-                            class="btn btn-danger">Cancel</button></a>
+                          onClick="return confirm('Desea cancelar la cita?')" title="Cancel Appointment"
+                          tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
                       <?php } else {
 
                         echo "Cancelled";
@@ -445,7 +453,7 @@ function get_specs()
             <table class="table table-hover">
               <thead>
                 <tr>
-                <th scope="col">Id Resultado</th>
+                  <th scope="col">Id Resultado</th>
                   <th scope="col">Técnico</th>
                   <th scope="col">Id Cita</th>
                   <th scope="col">Fecha</th>
@@ -494,8 +502,7 @@ function get_specs()
 
                         <a href="admin-panel.php?id_resultado=<?php echo $row['id_resultado'] ?>">
                           <input type="hidden" name="id_resultado" value="<?php echo $row['id_resultado'] ?>" />
-                          <input type="submit" name="generate_bill"
-                            class="btn btn-success" value="Descargar" />
+                          <input type="submit" name="generate_bill" class="btn btn-success" value="Descargar" />
                         </a>
                     </td>
                     </form>

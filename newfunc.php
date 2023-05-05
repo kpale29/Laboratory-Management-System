@@ -32,7 +32,8 @@ function display_examen() {
     $id=$row['id'];
     $examen=$row['examen'];
     $price=$row['precio'];
-    echo '<option value="'.$id.'" data-value="'.$price.'">'.$examen.'</option>';
+    $comment =$row['comentario'];
+    echo '<option value="'.$id.'" valor="'.$comment.'" data-value="'.$price.'">'.$examen.'</option>';
   }
 } 
 

@@ -38,7 +38,8 @@ CREATE TABLE `paciente` (
 create TABLE `examen`(
   `id` int AUTO_INCREMENT PRIMARY KEY,
   `examen` varchar(50) NOT NULL,
-  `precio` int(11) NOT NULL
+  `precio` int(11) NOT NULL,
+  `comentario` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `cita` (
